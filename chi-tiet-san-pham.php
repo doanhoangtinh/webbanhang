@@ -83,23 +83,35 @@
                                     <?php
                                     if (isset($_POST["btnDatHangHoa"])) {
 
-                                        $soLuong = $_POST["soLuong"];
-                                        $sqlGetSoLuongHang = "SELECT * FROM hanghoa WHERE MSHH = $maSanPham";
-                                        $kq =  $conn->query($sqlGetSoLuongHang);
-                                        $soLuongHienTai = $kq->fetch_assoc();
-                                        if ($soLuong <= $soLuongHienTai["SoLuongHang"]) {
-                                            $date = date("Y-m-d h:i:s");
-                                            $sqlThemDatHang = "INSERT INTO `quanlydathang`.`dathang` (`NgayDH`, `TrangThai`, `MSKH`) VALUES ('$date', 'Chờ xét duyệt', '1');";
-                                            if ($conn->query($sqlThemDatHang) === true) {
-                                                $last_id = $conn->insert_id;
-                                                $sqlThemChiTietDatHang = "INSERT INTO `quanlydathang`.`chitietdathang` (`SoDonDH`, `MSHH`, `SoLuong`, `GiaDatHang`) VALUES ('$last_id', '$maSanPham', '$soLuong', '191');
-                                                ";
-                                                $conn->query($sqlThemChiTietDatHang);
+                                        if (isset($_SESSION["mskh"])) {
+                                            $soLuong = $_POST["soLuong"];
+                                            $sqlGetHangHoaById = "SELECT * FROM hanghoa WHERE MSHH = $maSanPham";
+                                            $resultGetHangHoaById =  $conn->query($sqlGetHangHoaById);
+                                            $hanghoa = $resultGetHangHoaById->fetch_assoc();
+                                            if ($soLuong <= $hanghoa["SoLuongHang"]) {
+                                                $date = date("Y-m-d h:i:s");
+                                                $mskh = $_SESSION["mskh"];
+                                                $sqlThemDatHang = "INSERT INTO `quanlydathang`.`dathang` (`NgayDH`, `TrangThai`, `MSKH`) VALUES ('$date', 'Chờ xét duyệt', '$mskh');";
+                                                if ($conn->query($sqlThemDatHang) === true) {
+                                                    $last_id = $conn->insert_id;
+                                                    $thanhtien = $soLuong * $hanghoa["Gia"];
+                                                    $sqlThemChiTietDatHang = "INSERT INTO `quanlydathang`.`chitietdathang` (`SoDonDH`, `MSHH`, `SoLuong`, `GiaDatHang`) VALUES ('$last_id', '$maSanPham', '$soLuong', '$thanhtien');
+                                                    ";
+                                                    if ($conn->query($sqlThemChiTietDatHang) === true) {
+                                                        echo '<script type="text/javascript">alert("Đặt hàng thành công!")</script>';
+                                                        echo "<script>location.replace('index.php')</script>";
+                                                    } else {
+                                                        echo '<script type="text/javascript">alert("Đặt hàng thất bại!")</script>';
+                                                    }
+                                                } else {
+                                                    echo "Error: " . $sql . "<br>" . $conn->error;
+                                                }
                                             } else {
-                                                echo "Error: " . $sql . "<br>" . $conn->error;
+                                                echo '<script type="text/javascript">alert("Hiện chỉ còn ' . $hanghoa["SoLuongHang"] . ' sản phẩm!")</script>';
                                             }
-                                        }else{
-                                            echo '<script type="text/javascript">alert("Hiện chỉ còn '.$soLuongHienTai["SoLuongHang"] . ' sản phẩm!")</script>';
+                                        } else {
+                                            echo '<script type="text/javascript">alert("Vui lòng đăng nhập để đặt hàng!")</script>';
+                                            echo "<script>location.replace('dang-nhap.php')</script>";
                                         }
                                     }
                                     ?>

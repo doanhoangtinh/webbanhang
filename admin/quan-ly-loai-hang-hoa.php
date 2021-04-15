@@ -37,17 +37,11 @@ ob_start();
 </head>
 
 <body>
-    <!-- Header -->
-    <nav class="navbar rounded sticky-top" style="background-color: #00483d;">
-        <div class="container">
-            <a class="navbar-brand" href="#" style="text-shadow: 1px 0px 2px rgb(0, 0, 0); font-weight: bold;color: rgb(251, 255, 2); font-style: italic;">Điện máy VÀNG</a>
-            <form class="d-flex">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn bg-light" type="submit">Search</button>
-            </form>
-        </div>
 
-    </nav>
+    <?php if (isset($_SESSION["msnv"])) : ?>
+
+         <!-- Header -->
+    <?php include 'header.php' ?>
     <!-- End header -->
 
     <!-- Mo ket noi toi mysql -->
@@ -72,151 +66,168 @@ ob_start();
                 </div>
             </div>
             <div class="col-md-9 shadow p-3 mb-5 bg-body rounded">
-                <!-- Trang chu loai hang hoa -->
-                <div id="trangchuhanghoa" style="display: block;">
-                    <div>
-                        <h4 style="text-align: center;">DANH SÁCH CÁC LOẠI HÀNG HÓA</h4>
-                    </div>
-
+                <?php if ((!empty($_GET["action"])) && ($_GET["action"] == "trang-chu")) : ?>
                     <?php
-                    $sql = "SELECT * FROM loaihanghoa";
-                    $result = $conn->query($sql);
+                    $sqlGetAllLoaiHangHoa = "SELECT * FROM loaihanghoa";
+                    $resultGetAllLoaiHangHoa = $conn->query($sqlGetAllLoaiHangHoa);
                     ?>
-
-
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Mã loại hàng hóa</th>
-                                    <th scope="col">Tên loại hàng hóa</th>
-                                    <th scope="col">Hành động</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($result as $item) : ?>
+                    <!-- Trang chu loai hang hoa -->
+                    <div>
+                        <div>
+                            <h4 style="text-align: center;">DANH SÁCH CÁC LOẠI HÀNG HÓA</h4>
+                        </div>
+                        <div>
+                            <a href="quan-ly-loai-hang-hoa.php?action=them-loai-hang-hoa" class="btn" style="background-color: #fbff02; color: black;font-weight: bold;">
+                                Thêm loại hàng hóa
+                            </a>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
                                     <tr>
-                                        <td><?= $item["MaLoaiHang"] ?></td>
-                                        <td><?= $item['TenLoaiHang'] ?></td>
-                                        <td>
-                                            <!-- Nút sửa, bấm vào sẽ hiển thị form hiệu chỉnh thông tin dựa vào khóa chính `lsp_ma` -->
-                                            <a href="edit.php?lsp_ma=<?= $loaisanpham['lsp_ma'] ?>" class="btn btn-warning">
-                                                <span data-feather="edit"></span> Sửa
-                                            </a>
-
-                                            <!-- Nút xóa, bấm vào sẽ xóa thông tin dựa vào khóa chính `lsp_ma` -->
-                                            <a href="delete.php?lsp_ma=<?= $loaisanpham['lsp_ma'] ?>" class="btn btn-danger">
-                                                <span data-feather="delete"></span> Xóa
-                                            </a>
-                                        </td>
+                                        <th scope="col">Mã loại hàng hóa</th>
+                                        <th scope="col">Tên loại hàng hóa</th>
+                                        <th scope="col">Hành động</th>
                                     </tr>
-                                <?php endforeach; ?>
-
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($resultGetAllLoaiHangHoa as $item) : ?>
+                                        <tr>
+                                            <td><?= $item["MaLoaiHang"] ?></td>
+                                            <td><?= $item["TenLoaiHang"] ?></td>
+                                            <td>
+                                                <a href="quan-ly-loai-hang-hoa.php?action=sua-loai-hang-hoa&id=<?= $item["MaLoaiHang"] ?>" class="btn btn-warning">
+                                                    Sửa
+                                                </a>
+                                                <form action="" method="post" style="display: inline-flex;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa?');">
+                                                    <input type="hidden" class="form-control" id="txtXoaMaLoaiHang" name="txtXoaMaLoaiHang" value="<?= $item["MaLoaiHang"] ?>">
+                                                    <button type="submit" class="btn btn-danger" name="btnXoaLoaiHangHoa">Xóa</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
+                    <!-- End trang chu loai hang hoa -->
+                <?php endif ?>
+
+                <?php if ((!empty($_GET["action"])) && ($_GET["action"] == "them-loai-hang-hoa")) : ?>
+                    <!-- Them loai hang hoa -->
                     <div>
-                        <button class="btn" style="background-color: #fbff02; color: black;font-weight: bold;" onclick="xuLyHienThi('themhanghoa','trangchuhanghoa');">Thêm loại hàng hóa</button>
+                        <div>
+                            <h4 style="text-align: center;">THÊM LOẠI HÀNG HÓA</h4>
+                        </div>
+                        <div class="mb-1 container">
+                            <button class="btn" style="background-color: #fbff02; color: black;font-weight: bold;" onclick="xuLyHienThi('trangchuhanghoa','themhanghoa');">Quay lại</button>
+                        </div>
+                        <div class="container">
+                            <form action="" method="post" enctype="multipart/form-data">
+                                <div class="mb-3">
+                                    <label for="txtThemTenLoaiHang" class="form-label">Tên loại hàng hóa</label>
+                                    <input type="text" class="form-control" id="txtThemTenLoaiHang" name="txtThemTenLoaiHang" maxlength="79">
+                                </div>
+                                <div class="mb-3">
+                                    <button type="submit" class="btn btn-success form-control" name="btnThemLoaiHangHoa">Thêm loại hàng hóa</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
 
-                    <div class="container">
+                    <!-- Xu ly PHP them loai hang hoa -->
+                    <?php
+                    if (isset($_POST["btnThemLoaiHangHoa"])) {
+                        $txtThemTenLoaiHang = $_POST["txtThemTenLoaiHang"];
+                        $sqlThemLoaiHangHoa = "INSERT INTO `quanlydathang`.`loaihanghoa` (`TenLoaiHang`) VALUES ('$txtThemTenLoaiHang');";
+                        if ($conn->query($sqlThemLoaiHangHoa)) {
+                            echo '<script type="text/javascript">alert("Thêm loại hàng hóa thành công!")</script>';
+                            echo "<script>location.replace('quan-ly-loai-hang-hoa.php?action=trang-chu')</script>";
+                        } else {
+                            echo '<script type="text/javascript">alert("Thêm loại hàng hóa thất bại!")</script>';
+                        }
+                    }
+                    ?>
+                    <!-- End xu ly PHP them loai hang hoa -->
+                    <!-- End them hang hoa -->
+                <?php endif ?>
 
-                    </div>
-                </div>
-                <!-- End trang chu hang hoa -->
-
-                <!-- Them loai hang hoa -->
-                <div id="themhanghoa" style="display: none;">
+                <?php if ((!empty($_GET["action"])) && ($_GET["action"] == "sua-loai-hang-hoa") && (!empty($_GET["id"]))) : ?>
+                    <?php
+                    $maloaihang = $_GET["id"];
+                    $sqlGetLoaiHangHoaById = "SELECT * FROM loaihanghoa WHERE MaLoaiHang = $maloaihang";
+                    $resultGetLoaiHangHoaById = $conn->query($sqlGetLoaiHangHoaById);
+                    $loaiHangHoa = $resultGetLoaiHangHoaById->fetch_assoc();
+                    ?>
+                    <!-- Sua loai hang hoa -->
                     <div>
-                        <h4 style="text-align: center;">THÊM LOẠI HÀNG HÓA</h4>
+                        <div>
+                            <h4 style="text-align: center;">SỬA LOẠI HÀNG HÓA</h4>
+                        </div>
+                        <div class="container">
+                            <form action="" method="post">
+                                <div class="mb-3">
+                                    <input type="hidden" class="form-control" id="txtSuaMaLoaiHang" name="txtSuaMaLoaiHang" value="<?= $loaiHangHoa["MaLoaiHang"] ?>">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="txtSuaTenLoaiHang" class="form-label">Tên loại hàng hóa</label>
+                                    <input type="text" class="form-control" maxlength="79" id="txtSuaTenLoaiHang" name="txtSuaTenLoaiHang" value="<?= $loaiHangHoa["TenLoaiHang"] ?>">
+                                </div>
+                                <div class="mb-3">
+                                    <button type="submit" class="btn btn-success form-control" name="btnSuaLoaiHangHoa">Sửa loại hàng hóa</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
+                    <!-- Xu ly PHP sua loai hang hoa -->
+                    <?php
+                    if (isset($_POST["btnSuaLoaiHangHoa"])) {
+                        $txtSuaMaLoaiHang = $_POST["txtSuaMaLoaiHang"];
+                        $txtSuaTenLoaiHang = $_POST["txtSuaTenLoaiHang"];
+                        $sqlSuaLoaiHangHoa = <<<EOT
+                        UPDATE `quanlydathang`.`loaihanghoa` 
+                        SET `TenLoaiHang` = '$txtSuaTenLoaiHang' 
+                        WHERE (`MaLoaiHang` = '$txtSuaMaLoaiHang');
+EOT;
+                        if ($conn->query($sqlSuaLoaiHangHoa)) {
+                            echo '<script type="text/javascript">alert("Sửa loại hàng hóa thành công!")</script>';
+                            echo "<script>location.replace('quan-ly-loai-hang-hoa.php?action=trang-chu')</script>";
+                        } else {
+                            echo '<script type="text/javascript">alert("Sửa loại hàng hóa thất bại!")</script>';
+                        }
+                    }
+                    ?>
+                    <!-- End xu ly PHP sua loai hang hoa -->
 
-                    <div class="mb-1 container">
-                        <button class="btn" style="background-color: #fbff02; color: black;font-weight: bold;" onclick="xuLyHienThi('trangchuhanghoa','themhanghoa');">Quay lại</button>
-                    </div>
+                    <!-- End sua loai hang hoa -->
+                <?php endif ?>
 
-                    <div class="container">
-                        <form action="" method="post" enctype="multipart/form-data">
-                            <div class="mb-3">
-                                <label for="txtThemTenLoaiHang" class="form-label">Tên loại hàng hóa</label>
-                                <input type="text" class="form-control" id="txtThemTenLoaiHang" name="txtThemTenLoaiHang">
-                            </div>
-                            <div class="mb-3">
-                                <button type="submit" class="btn btn-success form-control" name="btnThemLoaiHangHoa">Thêm loại hàng hóa</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-
+                <!-- Xu ly PHP xoa loai hang hoa -->
                 <?php
-                if (isset($_POST["btnThemLoaiHangHoa"])) {
-                    $sql = "INSERT INTO `quanlydathang`.`loaihanghoa` (`TenLoaiHang`) 
-                    VALUES ('$_POST[txtThemTenLoaiHang]');
-                    ";
-                    $conn->query($sql);
-
-                    echo '<script type="text/javascript">alert("Thêm loại hàng hóa thành công!")</script>';
-                    echo "<script>location.replace('quan-ly-loai-hang-hoa.php')</script>";
+                if (isset($_POST["btnXoaLoaiHangHoa"])) {
+                    $txtXoaMaLoaiHang = $_POST["txtXoaMaLoaiHang"];
+                    $sqlXoaLoaiHangHoa = <<<EOT
+                        DELETE FROM `quanlydathang`.`loaihanghoa` 
+                        WHERE (`MaLoaiHang` = '$txtXoaMaLoaiHang');
+EOT;
+                    if ($conn->query($sqlXoaLoaiHangHoa)) {
+                        echo '<script type="text/javascript">alert("Xóa loại hàng hóa thành công!")</script>';
+                        echo "<script>location.replace('quan-ly-loai-hang-hoa.php?action=trang-chu')</script>";
+                    } else {
+                        echo '<script type="text/javascript">alert("Xóa loại hàng hóa thất bại!")</script>';
+                    }
                 }
                 ?>
-
-                <!-- End them hang hoa -->
-
-                <!-- Sua hang hoa -->
-                <div id="suahanghoa" style="display: none;">
-                    <div>
-                        <h4 style="text-align: center;">SỬA HÀNG HÓA</h4>
-                    </div>
-                    <div class="container">
-                        <div class="mb-3">
-                            <label for="formGroupExampleInput" class="form-label">Tên hàng hóa</label>
-                            <input type="text" class="form-control" placeholder="Example input placeholder">
-                        </div>
-                        <div class="mb-3">
-                            <label for="formGroupExampleInput2" class="form-label">Quy cách</label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label for="formGroupExampleInput2" class="form-label">Giá</label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label for="formGroupExampleInput2" class="form-label">Số lượng hàng</label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label for="formGroupExampleInput2" class="form-label">Ghi chú</label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label for="formGroupExampleInput2" class="form-label">Loại hàng</label>
-                            <select class="form-select" aria-label="Default select example">
-                                <option selected>Open this select menu</option>
-                                <option value="1">One</option>
-                                <option value="2">Two</option>
-                                <option value="3">Three</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <button type="button" class="btn btn-success form-control">Thêm hàng hóa</button>
-                        </div>
-                    </div>
-                </div>
-                <!-- End sua hang hoa -->
-
+                <!-- End xu ly PHP xoa loai hang hoa -->
             </div>
         </div>
     </div>
 
+    <?php else : ?>
+        <?php echo "<script>location.replace('dang-nhap.php')</script>"; ?>
+    <?php endif; ?>
 
-    <script>
-        function xuLyHienThi(idHienThi, idBlock) {
-            document.getElementById(idBlock).style.display = "none";
-            document.getElementById(idHienThi).style.display = "block";
-        }
-    </script>
-
+   
 </body>
 
 </html>

@@ -54,24 +54,21 @@ session_start();
                         if (isset($_POST["btnDangNhap"])) {
                             $taiKhoanDangNhap = $_POST["txtTaiKhoanDangNhap"];
                             $matKhauDangNhap = $_POST["txtMatKhauDangNhap"];
-
-
                             $sql = "SELECT * FROM khachhang WHERE TaiKhoan = '$taiKhoanDangNhap';";
                             $result = $conn->query($sql);
                             $khachHang = $result->fetch_assoc();
                             if ($khachHang["MatKhau"] == $matKhauDangNhap) {
-                                $_SESSION["taiKhoan"] = $taiKhoanDangNhap;
-                                $_SESSION["matKhau"] = $matKhauDangNhap;
                                 $_SESSION["mskh"] = $khachHang["MSKH"];
-                                $_SESSION["tenKhachHang"] = $khachHang["HoTenKH"];
-                                // echo "<script>location.replace('index.php')</script>";
+                                $_SESSION["tenkhachhang"] = $khachHang["HoTenKH"];
+                                echo "<script>location.replace('index.php')</script>";
 
                             } else {
                                 echo '<script type="text/javascript">alert("Tài khoản hoặc mật khẩu không chính xác!")</script>';
+                                echo "<script>location.replace('dang-nhap.php')</script>";
                             }
 
                             // echo '<script type="text/javascript">alert("Đăng ký tài khoản thành công!")</script>';
-                            echo "<script>location.replace('index.php')</script>";
+                            
                         }
                         ?>
                     </div>
