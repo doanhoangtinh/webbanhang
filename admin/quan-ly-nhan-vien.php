@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -34,7 +35,7 @@
 </head>
 
 <body>
-    
+
 
     <?php if (isset($_SESSION["msnv"])) : ?>
         <!-- Header -->
@@ -53,12 +54,12 @@
                     </div>
                     <div class="shadow p-3 mb-5" style="background-color: #00483d; border-radius: 10px;">
                         <ul>
-                            <li><a href="kiem-duyet-don-hang.php">Kiểm duyệt đơn hàng</a></li>
-                            <li><a href="quan-ly-nhan-vien.php">Quản lý nhân viên</a></li>
-                            <li><a href="quan-ly-hang-hoa.php">Quản lý hàng hóa</a></li>
-                            <li><a href="quan-ly-loai-hang-hoa.php">Quản lý loại hàng hóa</a></li>
-                            <li><a href="quan-ly-khach-hang.php">Quản lý khách hàng</a></li>
-                            <li><a href="quan-ly-dia-chi.php">Quản lý địa chỉ</a></li>
+                            <li><a href="kiem-duyet-don-hang.php?action=trang-chu">Kiểm duyệt đơn hàng</a></li>
+                            <li><a href="quan-ly-nhan-vien.php?action=trang-chu">Quản lý nhân viên</a></li>
+                            <li><a href="quan-ly-hang-hoa.php?action=trang-chu">Quản lý hàng hóa</a></li>
+                            <li><a href="quan-ly-loai-hang-hoa.php?action=trang-chu">Quản lý loại hàng hóa</a></li>
+                            <li><a href="quan-ly-khach-hang.php?action=trang-chu">Quản lý khách hàng</a></li>
+                            <li><a href="quan-ly-dia-chi.php?action=trang-chu">Quản lý địa chỉ</a></li>
                         </ul>
                     </div>
                 </div>

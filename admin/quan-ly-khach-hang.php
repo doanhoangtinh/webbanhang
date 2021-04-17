@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,24 +31,14 @@
             background-color: #555;
             color: white;
         }
-
     </style>
 </head>
 
 <body>
 
-  <!-- Header -->
-<nav class="navbar rounded" style="background-color: #00483d;">
-  <div class="container">
-  <a class="navbar-brand" href="#" style="text-shadow: 1px 0px 2px rgb(0, 0, 0); font-weight: bold;color: rgb(251, 255, 2); font-style: italic;">Điện máy VÀNG</a>    <form class="d-flex">
-      <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn bg-light" type="submit">Search</button>
-    </form>
-  </div>
-</nav>
-  
-
-  <!-- End header -->
+    <!-- Header -->
+    <?php include 'header.php' ?>
+    <!-- End header -->
 
     <div class="container mt-3">
         <div class="row container" style="height: 500px;">
@@ -57,12 +48,12 @@
                 </div>
                 <div class="shadow p-3 mb-5" style="background-color: #00483d; border-radius: 10px;">
                     <ul>
-                        <li><a href="kiem-duyet-don-hang.php">Kiểm duyệt đơn hàng</a></li>
-                        <li><a href="quan-ly-nhan-vien.php">Quản lý nhân viên</a></li>
-                        <li><a href="quan-ly-hang-hoa.php">Quản lý hàng hóa</a></li>
-                        <li><a href="quan-ly-loai-hang-hoa.php">Quản lý loại hàng hóa</a></li>
-                        <li><a href="quan-ly-khach-hang.php">Quản lý khách hàng</a></li>
-                        <li><a href="quan-ly-dia-chi.php">Quản lý địa chỉ</a></li>
+                    <li><a href="kiem-duyet-don-hang.php?action=trang-chu">Kiểm duyệt đơn hàng</a></li>
+                            <li><a href="quan-ly-nhan-vien.php?action=trang-chu">Quản lý nhân viên</a></li>
+                            <li><a href="quan-ly-hang-hoa.php?action=trang-chu">Quản lý hàng hóa</a></li>
+                            <li><a href="quan-ly-loai-hang-hoa.php?action=trang-chu">Quản lý loại hàng hóa</a></li>
+                            <li><a href="quan-ly-khach-hang.php?action=trang-chu">Quản lý khách hàng</a></li>
+                            <li><a href="quan-ly-dia-chi.php?action=trang-chu">Quản lý địa chỉ</a></li>
                     </ul>
                 </div>
             </div>

@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -40,6 +41,9 @@
         <!-- Header -->
         <?php include 'header.php' ?>
         <!-- End header -->
+        <!-- Mo ket noi toi mysql -->
+        <?php include '../dbconnection.php'; ?>
+        <!-- End mo ket noi toi mysql -->
         <div class="container mt-3">
             <div class="row container" style="height: 500px;">
                 <div class="col-md-3">
@@ -48,31 +52,31 @@
                     </div>
                     <div class="shadow p-3 mb-5" style="background-color: #00483d; border-radius: 10px;">
                         <ul>
-                            <li><a href="kiem-duyet-don-hang.php">Kiểm duyệt đơn hàng</a></li>
-                            <li><a href="quan-ly-nhan-vien.php">Quản lý nhân viên</a></li>
-                            <li><a href="quan-ly-hang-hoa.php">Quản lý hàng hóa</a></li>
-                            <li><a href="quan-ly-loai-hang-hoa.php">Quản lý loại hàng hóa</a></li>
-                            <li><a href="quan-ly-khach-hang.php">Quản lý khách hàng</a></li>
-                            <li><a href="quan-ly-dia-chi.php">Quản lý địa chỉ</a></li>
+                            <li><a href="kiem-duyet-don-hang.php?action=trang-chu">Kiểm duyệt đơn hàng</a></li>
+                            <li><a href="quan-ly-nhan-vien.php?action=trang-chu">Quản lý nhân viên</a></li>
+                            <li><a href="quan-ly-hang-hoa.php?action=trang-chu">Quản lý hàng hóa</a></li>
+                            <li><a href="quan-ly-loai-hang-hoa.php?action=trang-chu">Quản lý loại hàng hóa</a></li>
+                            <li><a href="quan-ly-khach-hang.php?action=trang-chu">Quản lý khách hàng</a></li>
+                            <li><a href="quan-ly-dia-chi.php?action=trang-chu">Quản lý địa chỉ</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-md-9 shadow p-3 mb-5 bg-body rounded">
                     <?php if ((!empty($_GET["action"])) && ($_GET["action"] == "trang-chu")) : ?>
                         <?php
-                        $sqlGetAllHangHoa = "SELECT * FROM hanghoa";
-                        $resultGetAllHangHoa = $conn->query($sqlGetAllHangHoa);
+                        $sqlGetAllDatHang = "SELECT * FROM dathang";
+                        $resultGetAllDatHang = $conn->query($sqlGetAllDatHang);
                         ?>
                         <!-- Trang chu kiem duyet hang hoa -->
                         <div>
                             <div>
                                 <h4 style="text-align: center;">DANH SÁCH CÁC ĐƠN ĐẶT HÀNG</h4>
                             </div>
-                            <div>
+                            <!-- <div>
                                 <a href="quan-ly-hang-hoa.php?action=them-hang-hoa" class="btn" style="background-color: #fbff02; color: black;font-weight: bold;">
                                     Thêm hàng hóa
                                 </a>
-                            </div>
+                            </div> -->
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
@@ -87,24 +91,24 @@
                                         </tr>
                                     </thead>
                                     <tbody>
- 
-                                        <?php foreach ($resultGetAllHangHoa as $item) : ?>
+
+                                        <?php foreach ($resultGetAllDatHang as $item) : ?>
                                             <tr>
-                                                <th scope='row'><?= $item["MSHH"] ?></th>
-                                                <td><?= $item["TenHH"] ?></td>
-                                                <td><?= $item["Gia"] ?></td>
-                                                <td><?= $item["SoLuongHang"] ?></td>
-                                                <td><?= $item["MaLoaiHang"] ?></td>
-                                                <td><img src='../uploads/<?= $item["AnhSanPham"] ?>' style='width: 50px; height: 50px;'></td>
+                                                <th scope='row'><?= $item["SoDonDH"] ?></th>
+                                                <td><?= $item["NgayDH"] ?></td>
+                                                <td><?= $item["NgayGH"] ?></td>
+                                                <td><?= $item["TrangThai"] ?></td>
+                                                <td><?= $item["MSKH"] ?></td>
+                                                <td><?= $item["MSNV"] ?></td>
                                                 <td>
-                                                    <a href="quan-ly-hang-hoa.php?action=sua-hang-hoa&id=<?= $item['MSHH'] ?>" class="btn btn-warning">
-                                                        <span data-feather="edit"></span> Sửa
+                                                    <a href="kiem-duyet-don-hang.php?action=duyet-don-hang&id=<?= $item['SoDonDH'] ?>" class="btn btn-warning">
+                                                        <span data-feather="edit"></span> Duyệt đơn hàng
                                                     </a>
 
-                                                    <form action="" method="post" style="display: inline-flex;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa?');">
+                                                    <!-- <form action="" method="post" style="display: inline-flex;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa?');">
                                                         <input type="hidden" class="form-control" id="txtXoaMaLoaiHang" name="txtXoaMaHangHoa" value="<?= $item["MSHH"] ?>">
                                                         <button type="submit" class="btn btn-danger" name="btnXoaHangHoa">Xóa</button>
-                                                    </form>
+                                                    </form> -->
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
@@ -116,75 +120,59 @@
                         <!-- End trang chu hang hoa -->
                     <?php endif ?>
 
-                    
 
-                    <?php if ((!empty($_GET["action"])) && ($_GET["action"] == "sua-hang-hoa") && (!empty($_GET["id"]))) : ?>
+
+                    <?php if ((!empty($_GET["action"])) && ($_GET["action"] == "duyet-don-hang") && (!empty($_GET["id"]))) : ?>
                         <?php
-                        $masohanghoa = $_GET["id"];
-                        $sqlGetHangHoaById = "SELECT * FROM hanghoa WHERE MSHH = $masohanghoa";
-                        $resultGetHangHoaById = $conn->query($sqlGetHangHoaById);
-                        $hangHoa = $resultGetHangHoaById->fetch_assoc();
+                        $masodonhang = $_GET["id"];
+                        $sqlGetDonHangById = "SELECT * FROM dathang WHERE SoDonDH = $masodonhang";
+                        $resultGetDonHangById = $conn->query($sqlGetDonHangById);
+                        $donhang = $resultGetDonHangById->fetch_assoc();
                         ?>
                         <!-- Sua hang hoa -->
+                        <div>
+                            <div>
+                                <h4 style="text-align: center;">KIỂM DUYỆT ĐƠN HÀNG</h4>
+                            </div>
+                            <div class="container">
+                                <form action="" method="post" onsubmit="return checkNgayGiaoHang();">
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control" id="txtMaSoDonHang" name="txtMaSoDonHang" value="<?= $donhang["SoDonDH"] ?>">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="txtTrangThaiDonHang" class="form-label">Trạng thái đơn hàng</label>
+                                        <input type="text" required class="form-control" maxlength="79" id="txtTrangThaiDonHang" name="txtTrangThaiDonHang">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="txtNgayGiaoHang" class="form-label">Ngày giao hàng</label>
+                                        <input type="date" class="form-control" maxlength="79" id="txtNgayGiaoHang" name="txtNgayGiaoHang">
+                                    </div>
+                                    <div class="mb-3">
+                                        <button type="submit" class="btn btn-success form-control" name="btnDuyetDonHang">Duyệt đơn hàng</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                         <!-- Xu ly PHP sua hang hoa -->
                         <?php
-                        if (isset($_POST["btnSuaHangHoa"])) {
-                            if ($_FILES["fileSuaHinhAnh"]["size"] == 0) {
-                                $suaTenHang = $_POST["txtSuaTenHang"];
-                                $suaQuyCach = $_POST["txtSuaQuyCach"];
-                                $suaSoLuong = $_POST["txtSuaSoLuong"];
-                                $suaGia = $_POST["txtSuaGia"];
-                                $suaGhiChu = $_POST["txtSuaGhiChu"];
-                                $suaMaHangHoa = $_POST["txtSuaMaHangHoa"];
-                                $suaMaLoaiHang = $_POST["txtSuaLoaiHang"];
-                                $sqlCapNhatHangHoa = <<<EOT
-                            UPDATE `quanlydathang`.`hanghoa` 
-                            SET `TenHH` = '$suaTenHang', 
-                                `QuyCach` = '$suaQuyCach',
-                                `Gia` = '$suaGia', 
-                                `GhiChu` = '$suaGhiChu',
-                                `SoLuongHang` = '$suaSoLuong',
-                                `MaLoaiHang` ='$suaMaLoaiHang'
-                            WHERE (`MSHH` = '$suaMaHangHoa');
+                        if (isset($_POST["btnDuyetDonHang"])) {
+                            $txtMaSoDonHang = $_POST["txtMaSoDonHang"];
+                            $txtTrangThaiDonHang = $_POST["txtTrangThaiDonHang"];
+                            $txtNgayGiaoHang = date_create($_POST["txtNgayGiaoHang"]);
+                            $ngaygh = date_format($txtNgayGiaoHang, "Y-m-d");
+                            $msnv = $_SESSION["msnv"];
+                            $sqlDuyetDonHang = <<<EOT
+                        UPDATE `quanlydathang`.`dathang` 
+                        SET `NgayGH` = '$ngaygh',
+                            `TrangThai` = '$txtTrangThaiDonHang',
+                            `MSNV` = $msnv
+                        WHERE (`SoDonDH` = '$txtMaSoDonHang');
 EOT;
-                                if ($conn->query($sqlCapNhatHangHoa)) {
-                                    echo '<script type="text/javascript">alert("Sửa hàng hóa thành công!")</script>';
-                                    echo "<script>location.replace('quan-ly-hang-hoa.php?action=trang-chu')</script>";
-                                } else {
-                                    echo mysqli_error($conn);
-                                    echo '<script type="text/javascript">alert("Sửa hàng hóa thất bại!")</script>';
-                                }
+                            if ($conn->query($sqlDuyetDonHang)) {
+                                echo '<script type="text/javascript">alert("Duyệt đơn hàng thành công!")</script>';
+                                echo "<script>location.replace('quan-ly-loai-hang-hoa.php?action=trang-chu')</script>";
                             } else {
-
-                                $target_dir = "../uploads/";
-                                $target_file = $target_dir . basename($_FILES["fileSuaHinhAnh"]["name"]);
-                                $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-                                $fileName = basename($_FILES["fileSuaHinhAnh"]["name"]);
-                                move_uploaded_file($_FILES["fileSuaHinhAnh"]["tmp_name"], $target_file);
-                                $suaTenHang = $_POST["txtSuaTenHang"];
-                                $suaQuyCach = $_POST["txtSuaQuyCach"];
-                                $suaSoLuong = $_POST["txtSuaSoLuong"];
-                                $suaGia = $_POST["txtSuaGia"];
-                                $suaGhiChu = $_POST["txtSuaGhiChu"];
-                                $suaMaHangHoa = $_POST["txtSuaMaHangHoa"];
-                                $suaMaLoaiHang = $_POST["txtSuaLoaiHang"];
-                                $sqlCapNhatHangHoa = <<<EOT
-                            UPDATE `quanlydathang`.`hanghoa` 
-                            SET `TenHH` = '$suaTenHang', 
-                                `QuyCach` = '$suaQuyCach',
-                                `Gia` = '$suaGia', 
-                                `GhiChu` = '$suaGhiChu',
-                                `SoLuongHang` = '$suaSoLuong', 
-                                `AnhSanPham` = '$fileName',
-                                `MaLoaiHang` ='$suaMaLoaiHang'
-                            WHERE (`MSHH` = '$suaMaHangHoa');                            
-EOT;
-                                if ($conn->query($sqlCapNhatHangHoa)) {
-                                    echo '<script type="text/javascript">alert("Sửa hàng hóa thành công!")</script>';
-                                    echo "<script>location.replace('quan-ly-hang-hoa.php?action=trang-chu')</script>";
-                                } else {
-                                    echo '<script type="text/javascript">alert("Sửa hàng hóa thất bại!")</script>';
-                                }
+                                echo '<script type="text/javascript">alert("Duyệt đơn hàng thất bại!")</script>';
                             }
                         }
                         ?>
@@ -215,6 +203,24 @@ EOT;
     <?php else : ?>
         <?php echo "<script>location.replace('dang-nhap.php')</script>"; ?>
     <?php endif; ?>
+    <script>
+        function checkNgayGiaoHang() {
+            var dateGH = new Date(document.getElementById('txtNgayGiaoHang').value);
+            var currentDate = new Date();
+
+            if (dateGH.getTime() > currentDate.getTime()) {
+                var confirmdialog = confirm("Bạn chắc chắn muốn duyệt đơn hàng!");
+                if (confirmdialog == true) {
+                    return true;
+                }else{
+                    return false;
+                }
+            } else {
+                alert("Vui lòng chọn ngày giao hàng lớn hơn ngày duyệt!");
+                return false;
+            }
+        }
+    </script>
 </body>
 
 </html>
