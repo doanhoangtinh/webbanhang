@@ -101,14 +101,14 @@
                                                 <td><?= $item["MSKH"] ?></td>
                                                 <td><?= $item["MSNV"] ?></td>
                                                 <td>
-                                                    <a href="kiem-duyet-don-hang.php?action=duyet-don-hang&id=<?= $item['SoDonDH'] ?>" class="btn btn-warning">
-                                                        <span data-feather="edit"></span> Duyệt đơn hàng
-                                                    </a>
-
-                                                    <!-- <form action="" method="post" style="display: inline-flex;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa?');">
-                                                        <input type="hidden" class="form-control" id="txtXoaMaLoaiHang" name="txtXoaMaHangHoa" value="<?= $item["MSHH"] ?>">
-                                                        <button type="submit" class="btn btn-danger" name="btnXoaHangHoa">Xóa</button>
-                                                    </form> -->
+                                                    <div>
+                                                        <a href="kiem-duyet-don-hang.php?action=duyet-don-hang&id=<?= $item['SoDonDH'] ?>" class="btn btn-warning mb-1" style="width: 150px;">
+                                                            <span data-feather="edit"></span> Duyệt đơn hàng
+                                                        </a>
+                                                        <a href="kiem-duyet-don-hang.php?action=chi-tiet-don-hang&id=<?= $item['SoDonDH'] ?>" class="btn btn-success" style="width: 150px;">
+                                                            <span data-feather="edit"></span> Xem chi tiết
+                                                        </a>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
@@ -180,23 +180,53 @@ EOT;
                         <!-- End sua hang hoa -->
                     <?php endif ?>
 
-                    <!-- Xu ly PHP xoa loai hang hoa -->
-                    <?php
-                    if (isset($_POST["btnXoaHangHoa"])) {
-                        $xoaMaSoHangHoa = $_POST["txtXoaMaHangHoa"];
-                        $sqlXoaHangHoa = <<<EOT
-                        DELETE FROM `quanlydathang`.`hanghoa` 
-                        WHERE (`MSHH` = '$xoaMaSoHangHoa');
+
+
+                    <?php if ((!empty($_GET["action"])) && ($_GET["action"] == "chi-tiet-don-hang") && (!empty($_GET["id"]))) : ?>
+                        <?php
+                        $sodon = $_GET["id"];
+                        $sqlGetChiTietDatHangBySoDonDH = <<<EOT
+                        SELECT a.SoDonDH, b.TenHH,a.SoLuong,a.GiaDatHang 
+                        FROM quanlydathang.chitietdathang as a, hanghoa as b 
+                        WHERE a.MSHH = b.MSHH
+                              AND a.SoDonDH = '$sodon';
 EOT;
-                        if ($conn->query($sqlXoaHangHoa)) {
-                            echo '<script type="text/javascript">alert("Xóa hàng hóa thành công!")</script>';
-                            echo "<script>location.replace('quan-ly-hang-hoa.php?action=trang-chu')</script>";
-                        } else {
-                            echo '<script type="text/javascript">alert("Xóa hàng hóa thất bại!")</script>';
-                        }
-                    }
-                    ?>
-                    <!-- End xu ly PHP xoa loai hang hoa -->
+                        $resultsqlGetChiTietDatHangBySoDonDH = $conn->query($sqlGetChiTietDatHangBySoDonDH);
+                        ?>
+                        <!-- Trang chu kiem duyet hang hoa -->
+                        <div>
+                            <div>
+                                <h4 style="text-align: center;">Chi tiết đặt hàng</h4>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Mã số đơn hàng</th>
+                                            <th scope="col">Tên hàng hóa</th>
+                                            <th scope="col">Số lượng</th>
+                                            <th scope="col">Thành tiền</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <?php foreach ($resultsqlGetChiTietDatHangBySoDonDH as $item) : ?>
+                                            <tr>
+                                                <th scope='row'><?= $item["SoDonDH"] ?></th>
+                                                <td><?= $item["TenHH"] ?></td>
+                                                <td><?= $item["SoLuong"] ?></td>
+                                                <td><?= number_format($item["GiaDatHang"], 2) ?></td>
+                                            </tr>
+                                        <?php endforeach; ?>
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                        <!-- End trang chu hang hoa -->
+                    <?php endif ?>
                 </div>
             </div>
         </div>
@@ -212,7 +242,7 @@ EOT;
                 var confirmdialog = confirm("Bạn chắc chắn muốn duyệt đơn hàng!");
                 if (confirmdialog == true) {
                     return true;
-                }else{
+                } else {
                     return false;
                 }
             } else {

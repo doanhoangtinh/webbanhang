@@ -78,11 +78,12 @@ session_start();
                         $result = $conn->query($sql);
                         $nhanvien = $result->fetch_assoc();
                         if ($nhanvien["MatKhau"] == $matKhauDangNhap) {
-                            $_SESSION["taikhoan"] = $taiKhoanDangNhap;
-                            $_SESSION["matkhau"] = $matKhauDangNhap;
+                            // $_SESSION["taikhoan"] = $taiKhoanDangNhap;
+                            // $_SESSION["matkhau"] = $matKhauDangNhap;
+                            $_SESSION["chucvu"] = $nhanvien["ChucVu"];
                             $_SESSION["msnv"] = $nhanvien["MSNV"];
                             $_SESSION["tennhanvien"] = $nhanvien["HoTenNV"];
-                            echo "<script>location.replace('index.php')</script>";
+                            echo "<script>location.replace('kiem-duyet-don-hang.php?action=trang-chu')</script>";
 
                         } else {
                             echo '<script type="text/javascript">alert("Tài khoản hoặc mật khẩu không chính xác!")</script>';

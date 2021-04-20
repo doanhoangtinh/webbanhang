@@ -98,9 +98,9 @@
             }
             ?>
             <?php foreach ($resultGetAllHangHoaByLoai as $item) : ?>
-                <div class="col-md-3">
-                    <div class="card" style="width: 18rem; height: 30rem;">
-                        <div style="height: 300px;">
+                <div class="col-md-3 mb-3">
+                    <div class="card" style="width: 18rem; height: 25rem;">
+                        <div style="height: 200px;">
                             <img src="uploads/<?= $item["AnhSanPham"] ?>" class="img-fluid" alt="...">
                         </div>
                         <div class="card-body">

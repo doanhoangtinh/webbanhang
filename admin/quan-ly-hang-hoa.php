@@ -192,7 +192,6 @@ session_start();
                             $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
                             $fileName = basename($_FILES["fileThemHinhAnh"]["name"]);
                             move_uploaded_file($_FILES["fileThemHinhAnh"]["tmp_name"], $target_file);
-
                             $themTenHang = $_POST["txtThemTenHang"];
                             $themQuyCach = $_POST["txtThemQuyCach"];
                             $themSoLuong = $_POST["txtThemSoLuong"];
@@ -200,14 +199,15 @@ session_start();
                             $themGhiChu = $_POST["txtThemGhiChu"];
                             $themLoaiHang = $_POST["txtThemLoaiHang"];
                             $sqlThemHangHoa = <<<EOT
-                        "INSERT INTO `quanlydathang`.`hanghoa` 
+                        INSERT INTO `quanlydathang`.`hanghoa` 
                         (`TenHH`, `QuyCach`, `SoLuongHang`,`Gia`, `GhiChu`, `MaLoaiHang`, `AnhSanPham`) 
-                        VALUES ('$txtThemTenHang' , '$themQuyCach', '$themSoLuong','$themGia', '$themGhiChu', '$themLoaiHang', '$fileName');
+                        VALUES ('$themTenHang' , '$themQuyCach', '$themSoLuong','$themGia', '$themGhiChu', '$themLoaiHang', '$fileName');
 EOT;
                             if ($conn->query($sqlThemHangHoa)) {
                                 echo '<script type="text/javascript">alert("Thêm hàng hóa thành công!")</script>';
-                                echo "<script>location.replace('quan-ly-hang-hoa.php')</script>";
+                                echo "<script>location.replace('quan-ly-hang-hoa.php?action=trang-chu')</script>";
                             } else {
+                                echo mysqli_error($conn);
                                 echo '<script type="text/javascript">alert("Thêm hàng hóa thất bại!")</script>';
                             }
                         }

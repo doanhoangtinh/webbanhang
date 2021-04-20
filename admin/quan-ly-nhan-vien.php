@@ -102,6 +102,7 @@
                                                 <td><?= $item["ChucVu"] ?></td>
                                                 <td><?= $item["DiaChi"] ?></td>
                                                 <td><?= $item["SoDienThoai"] ?></td>
+                                                <td><?= $item["TaiKhoan"] ?></td>
 
 
                                                 <td>

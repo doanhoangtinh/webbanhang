@@ -30,9 +30,9 @@
                         <?php endforeach; ?>
                     </ul>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                </li>
+                </li> -->
             </ul>
             <form class="d-flex" style="padding-right: 10px;">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

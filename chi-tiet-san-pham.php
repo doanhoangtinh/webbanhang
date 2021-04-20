@@ -74,15 +74,14 @@
                                 </div>
                                 <span style="font-weight: 500;">Số lượng muốn mua</span>
                                 <div style="margin-top: 10px;">
-                                    <form action="" method="post">
+                                    <form action="" method="post" onsubmit="return confirm('Xác nhận đặt hàng');">
                                         <input class="form-control" type="number" name="soLuong" id="soLuong" min="1" value="1" style="width: 100px;">
                                         <div class="mt-3">
                                             <button type="submit" class="btn btn-success form-control" name="btnDatHangHoa">Đặt ngay</button>
                                         </div>
                                     </form>
                                     <?php
-                                    if (isset($_POST["btnDatHangHoa"])) {
-
+                                    if (isset($_POST["btnDatHangHoa"])) { 
                                         if (isset($_SESSION["mskh"])) {
                                             $soLuong = $_POST["soLuong"];
                                             $sqlGetHangHoaById = "SELECT * FROM hanghoa WHERE MSHH = $maSanPham";
