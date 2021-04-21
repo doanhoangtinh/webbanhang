@@ -12,30 +12,6 @@ session_start();
     <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="../vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
-
-    <style>
-        ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            width: 100%;
-
-        }
-
-        li a {
-            display: block;
-            color: white;
-            padding: 8px 16px;
-            text-decoration: none;
-        }
-
-        /* Change the link color on hover */
-        li a:hover {
-            background-color: #555;
-            color: white;
-        }
-    </style>
-
 </head>
 
 <body>
@@ -57,14 +33,14 @@ session_start();
                         <p style="font-weight: 500;">Nhập thông tin tài khoản</p>
                         <form action="" method="post">
                             <div class="mb-3">
-                                <input class="form-control" type="text" name="txtTaiKhoanDangNhap" placeholder="Tên đăng nhập">
+                                <input class="form-control" required type="text" name="txtTaiKhoanDangNhap" placeholder="Tên đăng nhập">
                             </div>
                             <div class="mb-3">
-                                <input class="form-control" type="password" name="txtMatKhauDangNhap" placeholder="Mật khẩu">
+                                <input class="form-control" required type="password" name="txtMatKhauDangNhap" placeholder="Mật khẩu">
                             </div>
                             <div class="row">
                                 <div class="col-6">
-                                    <button class="btn btn-primary px-4" name="btnDangNhap">Đăng nhập</button>
+                                    <button class="btn btn-success px-4" name="btnDangNhap">Đăng nhập</button>
                                 </div>
                             </div>
                         </form>

@@ -13,18 +13,8 @@
         a {
             color: white;
         }
-
-
-        .div1 {
-            background: red;
-        }
-
-        .div2 {
-            background: yellow;
-        }
-
-        .div3 {
-            background: green;
+        li a:hover {
+            color: white;
         }
     </style>
 </head>

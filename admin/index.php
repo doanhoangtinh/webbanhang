@@ -64,8 +64,9 @@
                 </div>
             </div>
         <?php else : ?>
-            <div class="alert alert-warning" role="alert" style="text-align: center;">
-                <span> Chức năng này chỉ giành cho Quản Trị Viên!</span>
+            <div class="alert alert-warning alert-dismissible " role="alert" style="text-align: center;">
+                <strong>Tài khoản của bạn bị giới hạn quyền truy cập!</strong> <span> chức năng này chỉ dùng cho Quản Trị Viên!</span>
+                <a href="kiem-duyet-don-hang.php?action=trang-chu" class="btn-close" aria-label="Close"></a>
             </div>
         <?php endif ?>
     <?php else : ?>

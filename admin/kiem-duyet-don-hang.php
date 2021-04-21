@@ -57,7 +57,6 @@
                             <li><a href="quan-ly-hang-hoa.php?action=trang-chu">Quản lý hàng hóa</a></li>
                             <li><a href="quan-ly-loai-hang-hoa.php?action=trang-chu">Quản lý loại hàng hóa</a></li>
                             <li><a href="quan-ly-khach-hang.php?action=trang-chu">Quản lý khách hàng</a></li>
-                            <li><a href="quan-ly-dia-chi.php?action=trang-chu">Quản lý địa chỉ</a></li>
                         </ul>
                     </div>
                 </div>

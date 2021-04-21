@@ -12,6 +12,32 @@ session_start();
     <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <style>
+        a {
+            color: white;
+        }
+        li a:hover {
+            color: white;
+        }
+        /* ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            width: 100%;
+
+        }
+
+        li a {
+            display: block;
+            color: white;
+            padding: 8px 16px;
+            text-decoration: none;
+        }
+
+        li a:hover {
+            color: white;
+        } */
+    </style>
 </head>
 
 <body>
@@ -34,17 +60,17 @@ session_start();
                             <p style="font-weight: 500;">Nhập thông tin tài khoản</p>
                             <form action="" method="post">
                                 <div class="mb-3">
-                                    <input class="form-control" type="text" name="txtTaiKhoanDangNhap" placeholder="Tên đăng nhập">
+                                    <input class="form-control" required type="text" name="txtTaiKhoanDangNhap" placeholder="Tên đăng nhập">
                                 </div>
                                 <div class="mb-3">
-                                    <input class="form-control" type="password" name="txtMatKhauDangNhap" placeholder="Mật khẩu">
+                                    <input class="form-control" required  type="password" name="txtMatKhauDangNhap" placeholder="Mật khẩu">
                                 </div>
                                 <div class="row">
                                     <div class="col-6">
-                                        <button class="btn btn-primary px-4" name="btnDangNhap">Đăng nhập</button>
+                                        <button class="btn btn-success px-4" name="btnDangNhap">Đăng nhập</button>
                                     </div>
                                     <div class="col-6">
-                                        <a class="nav-link" onclick="xuLyHienThi('dangky','dangnhap');">Đăng ký tài khoản</a>
+                                        <a class="nav-link" style="color: red;" onclick="xuLyHienThi('dangky','dangnhap');">Đăng ký tài khoản</a>
                                     </div>
                                 </div>
                             </form>
@@ -61,14 +87,13 @@ session_start();
                                 $_SESSION["mskh"] = $khachHang["MSKH"];
                                 $_SESSION["tenkhachhang"] = $khachHang["HoTenKH"];
                                 echo "<script>location.replace('index.php')</script>";
-
                             } else {
                                 echo '<script type="text/javascript">alert("Tài khoản hoặc mật khẩu không chính xác!")</script>';
                                 echo "<script>location.replace('dang-nhap.php')</script>";
                             }
 
                             // echo '<script type="text/javascript">alert("Đăng ký tài khoản thành công!")</script>';
-                            
+
                         }
                         ?>
                     </div>
@@ -86,27 +111,27 @@ session_start();
                             <form action="" method="post">
                                 <div class="mb-3">
                                     <label for="txtHoTenKH" class="form-label">Họ tên</label>
-                                    <input type="text" class="form-control" id="txtHoTenKH" name="txtHoTenKH">
+                                    <input type="text" required class="form-control" id="txtHoTenKH" name="txtHoTenKH">
                                 </div>
                                 <div class="mb-3">
                                     <label for="txtDiaChiKH" class="form-label">Địa chỉ</label>
-                                    <input type="text" class="form-control" id="txtDiaChiKH" name="txtDiaChiKH">
+                                    <input type="text" required class="form-control" id="txtDiaChiKH" name="txtDiaChiKH">
                                 </div>
                                 <div class="mb-3">
                                     <label for="txtEmail" class="form-label">Email</label>
-                                    <input type="text" class="form-control" id="txtEmail" name="txtEmail">
+                                    <input type="text"  required class="form-control" id="txtEmail" name="txtEmail">
                                 </div>
                                 <div class="mb-3">
                                     <label for="txtSDT" class="form-label">Số điện thoại</label>
-                                    <input type="text" class="form-control" id="txtSDT" name="txtSDT">
+                                    <input type="text" required class="form-control" id="txtSDT" name="txtSDT">
                                 </div>
                                 <div class="mb-3">
                                     <label for="txtTaiKhoan" class="form-label">Tài khoản</label>
-                                    <input type="text" class="form-control" id="txtTaiKhoan" name="txtTaiKhoan">
+                                    <input type="text" required class="form-control" id="txtTaiKhoan" name="txtTaiKhoan">
                                 </div>
                                 <div class="mb-3">
                                     <label for="txtMatKhau" class="form-label">Mật khẩu</label>
-                                    <input type="text" class="form-control" id="txtMatKhau" name="txtMatKhau">
+                                    <input type="text" required class="form-control" id="txtMatKhau" name="txtMatKhau">
                                 </div>
                                 <div class="mb-3">
                                     <button type="submit" class="btn btn-success form-control" name="btnDangKy">Đăng ký</button>

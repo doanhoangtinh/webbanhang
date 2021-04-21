@@ -15,6 +15,10 @@
       color: white;
     }
 
+    li a:hover {
+      color: white;
+    }
+
 
     .div1 {
       background: red;
@@ -53,7 +57,7 @@
         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="5" aria-label="Slide 6"></button>
         <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="6" aria-label="Slide 7"></button>
       </div>
-      <div class="carousel-inner " style=" border-radius: 20px" >
+      <div class="carousel-inner " style=" border-radius: 20px">
         <div class="carousel-item active">
           <img src="images/tl_hinh4.jpg" class="d-block w-100" alt="...">
         </div>
@@ -97,15 +101,15 @@
       ?>
 
       <?php foreach ($resultGetAllSanPham as $item) : ?>
-        <div class="col-md-3">
+        <div class="col-md-3 mb-3">
           <div class="card" style="width: 18rem; height: 30rem;">
             <div style="height: 300px;">
               <img src="uploads/<?= $item["AnhSanPham"] ?>" class="img-fluid" alt="...">
             </div>
             <div class="card-body">
               <h5 class="card-title" style="color: red;"><?= number_format($item["Gia"], 2) ?> <u>đ</u></h5>
-              <h6 class="card-title"><?= $item["TenHH"]?></h6>
-              <a href="chi-tiet-san-pham.php?id=<?=$item["MSHH"]?>" class="btn btn-primary">Xem chi tiết</a>
+              <h6 class="card-title"><?= $item["TenHH"] ?></h6>
+              <a href="chi-tiet-san-pham.php?id=<?= $item["MSHH"] ?>" class="btn btn-primary">Xem chi tiết</a>
             </div>
           </div>
         </div>

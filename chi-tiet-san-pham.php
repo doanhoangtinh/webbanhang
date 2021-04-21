@@ -14,9 +14,11 @@
         a {
             color: white;
         }
+        li a:hover {
+            color: white;
+        }
 
-
-        .div1 {
+        /* .div1 {
             background: red;
         }
 
@@ -27,6 +29,9 @@
         .div3 {
             background: green;
         }
+        li a:hover {
+            color: white;
+        } */
     </style>
 </head>
 
