@@ -112,7 +112,7 @@ session_start();
                                                     <td><?= $item["Gia"] ?></td>
                                                     <td><?= $item["SoLuongHang"] ?></td>
                                                     <td><?= $item["MaLoaiHang"] ?></td>
-                                                    <td><img src='../uploads/<?= $item["AnhSanPham"] ?>' style='width: 50px; height: 50px;'></td>
+                                                    <td><img src='../uploads/<?= $item["AnhHangHoa"] ?>' style='width: 50px; height: 50px;'></td>
                                                     <td>
                                                         <a href="quan-ly-hang-hoa.php?action=sua-hang-hoa&id=<?= $item['MSHH'] ?>" class="btn btn-warning mb-1">
                                                             <span data-feather="edit"></span> Sửa
@@ -203,7 +203,7 @@ session_start();
                                 $themLoaiHang = $_POST["txtThemLoaiHang"];
                                 $sqlThemHangHoa = <<<EOT
                         INSERT INTO `quanlydathang`.`hanghoa` 
-                        (`TenHH`, `QuyCach`, `SoLuongHang`,`Gia`, `GhiChu`, `MaLoaiHang`, `AnhSanPham`) 
+                        (`TenHH`, `QuyCach`, `SoLuongHang`,`Gia`, `GhiChu`, `MaLoaiHang`, `AnhHangHoa`) 
                         VALUES ('$themTenHang' , '$themQuyCach', '$themSoLuong','$themGia', '$themGhiChu', '$themLoaiHang', '$fileName');
 EOT;
                                 if ($conn->query($sqlThemHangHoa)) {
@@ -334,7 +334,7 @@ EOT;
                                 `Gia` = '$suaGia', 
                                 `GhiChu` = '$suaGhiChu',
                                 `SoLuongHang` = '$suaSoLuong', 
-                                `AnhSanPham` = '$fileName',
+                                `AnhHangHoa` = '$fileName',
                                 `MaLoaiHang` ='$suaMaLoaiHang'
                             WHERE (`MSHH` = '$suaMaHangHoa');                            
 EOT;

@@ -136,11 +136,16 @@
                             <div class="container">
                                 <form action="" method="post" onsubmit="return checkNgayGiaoHang();">
                                     <div class="mb-3">
-                                        <input type="text" class="form-control" id="txtMaSoDonHang" name="txtMaSoDonHang" value="<?= $donhang["SoDonDH"] ?>">
+                                        <input type="hidden" class="form-control" id="txtMaSoDonHang" name="txtMaSoDonHang" value="<?= $donhang["SoDonDH"] ?>">
                                     </div>
                                     <div class="mb-3">
                                         <label for="txtTrangThaiDonHang" class="form-label">Trạng thái đơn hàng</label>
-                                        <input type="text" required class="form-control" maxlength="79" id="txtTrangThaiDonHang" name="txtTrangThaiDonHang">
+
+                                        <select name="txtTrangThaiDonHang" class="form-select" aria-label="Default select example">
+                                            <option value="Đã được duyệt" selected>Đã được duyệt</option>
+                                        </select>
+
+                                        <!-- <input type="text" required class="form-control" maxlength="79" id="txtTrangThaiDonHang" name="txtTrangThaiDonHang"> -->
                                     </div>
                                     <div class="mb-3">
                                         <label for="txtNgayGiaoHang" class="form-label">Ngày giao hàng</label>
@@ -169,7 +174,7 @@
 EOT;
                             if ($conn->query($sqlDuyetDonHang)) {
                                 echo '<script type="text/javascript">alert("Duyệt đơn hàng thành công!")</script>';
-                                echo "<script>location.replace('quan-ly-loai-hang-hoa.php?action=trang-chu')</script>";
+                                echo "<script>location.replace('kiem-duyet-don-hang.php?action=trang-chu')</script>";
                             } else {
                                 echo '<script type="text/javascript">alert("Duyệt đơn hàng thất bại!")</script>';
                             }
@@ -185,17 +190,30 @@ EOT;
                         <?php
                         $sodon = $_GET["id"];
                         $sqlGetChiTietDatHangBySoDonDH = <<<EOT
-                        SELECT a.SoDonDH, b.TenHH,a.SoLuong,a.GiaDatHang 
-                        FROM quanlydathang.chitietdathang as a, hanghoa as b 
+                        SELECT * FROM chitietdathang as a, hanghoa as b, dathang as c, khachhang as d 
                         WHERE a.MSHH = b.MSHH
-                              AND a.SoDonDH = '$sodon';
+                        AND a.SoDonDH = c.SoDonDH
+                        AND c.MSKH = d.MSKH
+                        AND a.SoDonDH = '$sodon';
 EOT;
                         $resultsqlGetChiTietDatHangBySoDonDH = $conn->query($sqlGetChiTietDatHangBySoDonDH);
+                        $thongtin = $resultsqlGetChiTietDatHangBySoDonDH->fetch_assoc();
                         ?>
                         <!-- Trang chu kiem duyet hang hoa -->
                         <div>
                             <div>
                                 <h4 style="text-align: center;">Chi tiết đặt hàng</h4>
+                            </div>
+                            <div style="margin-left: 8px;">
+                                <h6>Mã số khách hàng: <span style="color: red; font-style: italic;"><?=$thongtin["MSKH"]?></span> </h6>
+                                <h6>Tên khách hàng: <span style="color: red; font-style: italic;"><?=$thongtin["HoTenKH"]?></span> </h6>
+                                <h6>Địa chỉ: <span style="color: red; font-style: italic;"><?=$thongtin["DiaChi"]?></span> </h6>
+                                <h6>Số điện thoại: <span style="color: red; font-style: italic;"><?=$thongtin["SoDienThoai"]?></span> </h6>
+                                <h6>Email: <span style="color: red; font-style: italic;"><?=$thongtin["Email"]?></span> </h6>
+                                <h6>Ngày đặt hàng: <span style="color: red; font-style: italic;"><?=$thongtin["NgayDH"]?></span> </h6>
+                                <h6>Ngày giao hàng: <span style="color: red; font-style: italic;"><?=$thongtin["NgayGH"]?></span> </h6>
+                                <h6>Trạng thái hiện tại: <span style="color: red; font-style: italic;"><?=$thongtin["TrangThai"]?></span> </h6>
+
                             </div>
 
                             <div class="table-responsive">
@@ -204,6 +222,7 @@ EOT;
                                         <tr>
                                             <th scope="col">Mã số đơn hàng</th>
                                             <th scope="col">Tên hàng hóa</th>
+                                            <th scope="col">Giá hàng hóa</th>
                                             <th scope="col">Số lượng</th>
                                             <th scope="col">Thành tiền</th>
                                         </tr>
@@ -214,6 +233,7 @@ EOT;
                                             <tr>
                                                 <th scope='row'><?= $item["SoDonDH"] ?></th>
                                                 <td><?= $item["TenHH"] ?></td>
+                                                <td><?= number_format($item["Gia"], 2) ?></td>
                                                 <td><?= $item["SoLuong"] ?></td>
                                                 <td><?= number_format($item["GiaDatHang"], 2) ?></td>
                                             </tr>

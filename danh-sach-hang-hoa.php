@@ -91,14 +91,14 @@
                 <div class="col-md-3 mb-3">
                     <div class="card" style="width: 18rem; height: 25rem;">
                         <div style="height: 200px;">
-                            <img src="uploads/<?= $item["AnhSanPham"] ?>" class="img-fluid" alt="...">
+                            <img src="uploads/<?= $item["AnhHangHoa"] ?>" class="img-fluid" alt="...">
                         </div>
                         <div class="card-body">
                             <h5 class="card-title" style="color: red;"><?= number_format($item["Gia"], 2) ?> <u>đ</u></h5>
                             <div style="height: 80px;">
                                 <h6 class="card-title"><?= $item["TenHH"] ?></h6>
                             </div>
-                            <a href="chi-tiet-san-pham.php?id=<?= $item["MSHH"] ?>" class="btn btn-primary">Xem chi tiết</a>
+                            <a href="chi-tiet-hang-hoa.php?id=<?= $item["MSHH"] ?>" class="btn btn-primary">Xem chi tiết</a>
                         </div>
                     </div>
                 </div>

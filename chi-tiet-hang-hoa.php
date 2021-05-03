@@ -56,7 +56,7 @@
 
                     <div class="row">
                         <div class="col-md-3">
-                            <img class="img-fluid" src="uploads/<?= $sanPham["AnhSanPham"] ?>" alt="" srcset="">
+                            <img class="img-fluid" src="uploads/<?= $sanPham["AnhHangHoa"] ?>" alt="" srcset="">
                         </div>
                         <div class="col-md-9">
                             <h5><?= $sanPham["TenHH"] ?></h5>

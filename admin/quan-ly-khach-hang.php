@@ -58,7 +58,7 @@
                         </div>
                     </div>
                     <div class="col-md-9 shadow p-3 mb-5 bg-body rounded">
-                        <h4>DANH SÁCH THÔNG TIN CÁC KHÁCH HÀNG</h4>
+                        <h4 style="text-align: center;">DANH SÁCH THÔNG TIN CÁC KHÁCH HÀNG</h4>
                     </div>
                 </div>
             </div>

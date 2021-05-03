@@ -18,19 +18,6 @@
     li a:hover {
       color: white;
     }
-
-
-    .div1 {
-      background: red;
-    }
-
-    .div2 {
-      background: yellow;
-    }
-
-    .div3 {
-      background: green;
-    }
   </style>
 </head>
 
@@ -102,14 +89,14 @@
 
       <?php foreach ($resultGetAllSanPham as $item) : ?>
         <div class="col-md-3 mb-3">
-          <div class="card" style="width: 18rem; height: 30rem;">
+          <div class="card" style="width: 18rem; height: 22rem;">
             <div style="height: 300px;">
-              <img src="uploads/<?= $item["AnhSanPham"] ?>" class="img-fluid" alt="...">
+              <img src="uploads/<?= $item["AnhHangHoa"] ?>" class="img-fluid" alt="...">
             </div>
             <div class="card-body">
               <h5 class="card-title" style="color: red;"><?= number_format($item["Gia"], 2) ?> <u>đ</u></h5>
               <h6 class="card-title"><?= $item["TenHH"] ?></h6>
-              <a href="chi-tiet-san-pham.php?id=<?= $item["MSHH"] ?>" class="btn btn-primary">Xem chi tiết</a>
+              <a href="chi-tiet-hang-hoa.php?id=<?= $item["MSHH"] ?>" class="btn btn-primary">Xem chi tiết</a>
             </div>
           </div>
         </div>
