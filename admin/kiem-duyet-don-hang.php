@@ -190,10 +190,11 @@ EOT;
                         <?php
                         $sodon = $_GET["id"];
                         $sqlGetChiTietDatHangBySoDonDH = <<<EOT
-                        SELECT * FROM chitietdathang as a, hanghoa as b, dathang as c, khachhang as d 
+                        SELECT * FROM chitietdathang as a, hanghoa as b, dathang as c, khachhang as d, nhanvien as e 
                         WHERE a.MSHH = b.MSHH
                         AND a.SoDonDH = c.SoDonDH
                         AND c.MSKH = d.MSKH
+                        AND c.MSNV = e.MSNV
                         AND a.SoDonDH = '$sodon';
 EOT;
                         $resultsqlGetChiTietDatHangBySoDonDH = $conn->query($sqlGetChiTietDatHangBySoDonDH);
@@ -213,6 +214,7 @@ EOT;
                                 <h6>Ngày đặt hàng: <span style="color: red; font-style: italic;"><?=$thongtin["NgayDH"]?></span> </h6>
                                 <h6>Ngày giao hàng: <span style="color: red; font-style: italic;"><?=$thongtin["NgayGH"]?></span> </h6>
                                 <h6>Trạng thái hiện tại: <span style="color: red; font-style: italic;"><?=$thongtin["TrangThai"]?></span> </h6>
+                                <h6>Nhân viên duyệt đơn hàng: <span style="color: red; font-style: italic;"><?=$thongtin["HoTenNV"]?></span> </h6>
 
                             </div>
 
