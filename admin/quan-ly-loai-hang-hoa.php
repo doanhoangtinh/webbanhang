@@ -51,7 +51,7 @@ session_start();
             <!-- End mo ket noi toi mysql -->
 
             <div class="container mt-3">
-                <div class="row container" style="height: 500px;">
+                <div class="row" style="height: 500px;">
                     <div class="col-md-3">
                         <div class="shadow p-3 mb-3" style="background-color: #00483d; border-radius: 10px;">
                             <h5 style="color: white;text-align: center;">DANH MỤC</h5>
@@ -124,7 +124,7 @@ session_start();
                                     <a class="btn" href="quan-ly-loai-hang-hoa.php?action=trang-chu" style="background-color: #fbff02; color: black;font-weight: bold;">Quay lại</a>
                                 </div>
                                 <div class="container">
-                                    <form action="" method="post" enctype="multipart/form-data">
+                                    <form action="" method="post" enctype="multipart/form-data" onsubmit="return confirm('Bạn có chắc chắn muốn thêm?');">
                                         <div class="mb-3">
                                             <label for="txtThemTenLoaiHang" class="form-label">Tên loại hàng hóa</label>
                                             <input type="text" class="form-control" id="txtThemTenLoaiHang" name="txtThemTenLoaiHang" maxlength="79">
@@ -140,7 +140,7 @@ session_start();
                             <?php
                             if (isset($_POST["btnThemLoaiHangHoa"])) {
                                 $txtThemTenLoaiHang = $_POST["txtThemTenLoaiHang"];
-                                $sqlThemLoaiHangHoa = "INSERT INTO `quanlydathang`.`loaihanghoa` (`TenLoaiHang`) VALUES ('$txtThemTenLoaiHang');";
+                                $sqlThemLoaiHangHoa = "INSERT INTO loaihanghoa (TenLoaiHang) VALUES ('$txtThemTenLoaiHang');";
                                 if ($conn->query($sqlThemLoaiHangHoa)) {
                                     echo '<script type="text/javascript">alert("Thêm loại hàng hóa thành công!")</script>';
                                     echo "<script>location.replace('quan-ly-loai-hang-hoa.php?action=trang-chu')</script>";
@@ -156,7 +156,7 @@ session_start();
                         <?php if ((!empty($_GET["action"])) && ($_GET["action"] == "sua-loai-hang-hoa") && (!empty($_GET["id"]))) : ?>
                             <?php
                             $maloaihang = $_GET["id"];
-                            $sqlGetLoaiHangHoaById = "SELECT * FROM loaihanghoa WHERE MaLoaiHang = $maloaihang";
+                            $sqlGetLoaiHangHoaById = "SELECT * FROM loaihanghoa WHERE MaLoaiHang = '$maloaihang'";
                             $resultGetLoaiHangHoaById = $conn->query($sqlGetLoaiHangHoaById);
                             $loaiHangHoa = $resultGetLoaiHangHoaById->fetch_assoc();
                             ?>
@@ -169,7 +169,7 @@ session_start();
                                     <a class="btn" href="quan-ly-loai-hang-hoa.php?action=trang-chu" style="background-color: #fbff02; color: black;font-weight: bold;">Quay lại</a>
                                 </div>
                                 <div class="container">
-                                    <form action="" method="post">
+                                    <form action="" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn sửa?');">
                                         <div class="mb-3">
                                             <input type="hidden" class="form-control" id="txtSuaMaLoaiHang" name="txtSuaMaLoaiHang" value="<?= $loaiHangHoa["MaLoaiHang"] ?>">
                                         </div>
@@ -189,9 +189,9 @@ session_start();
                                 $txtSuaMaLoaiHang = $_POST["txtSuaMaLoaiHang"];
                                 $txtSuaTenLoaiHang = $_POST["txtSuaTenLoaiHang"];
                                 $sqlSuaLoaiHangHoa = <<<EOT
-                        UPDATE `quanlydathang`.`loaihanghoa` 
-                        SET `TenLoaiHang` = '$txtSuaTenLoaiHang' 
-                        WHERE (`MaLoaiHang` = '$txtSuaMaLoaiHang');
+                        UPDATE loaihanghoa 
+                        SET TenLoaiHang = '$txtSuaTenLoaiHang' 
+                        WHERE MaLoaiHang = '$txtSuaMaLoaiHang';
 EOT;
                                 if ($conn->query($sqlSuaLoaiHangHoa)) {
                                     echo '<script type="text/javascript">alert("Sửa loại hàng hóa thành công!")</script>';
@@ -211,8 +211,8 @@ EOT;
                         if (isset($_POST["btnXoaLoaiHangHoa"])) {
                             $txtXoaMaLoaiHang = $_POST["txtXoaMaLoaiHang"];
                             $sqlXoaLoaiHangHoa = <<<EOT
-                        DELETE FROM `quanlydathang`.`loaihanghoa` 
-                        WHERE (`MaLoaiHang` = '$txtXoaMaLoaiHang');
+                        DELETE FROM loaihanghoa 
+                        WHERE MaLoaiHang = '$txtXoaMaLoaiHang';
 EOT;
                             if ($conn->query($sqlXoaLoaiHangHoa)) {
                                 echo '<script type="text/javascript">alert("Xóa loại hàng hóa thành công!")</script>';

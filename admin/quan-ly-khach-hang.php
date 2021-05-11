@@ -42,7 +42,7 @@
         <!-- End header -->
         <?php if ($_SESSION["chucvu"] == "QTV") : ?>
             <div class="container mt-3">
-                <div class="row container" style="height: 500px;">
+                <div class="row" style="height: 500px;">
                     <div class="col-md-3">
                         <div class="shadow p-3 mb-3" style="background-color: #00483d; border-radius: 10px;">
                             <h5 style="color: white;text-align: center;">DANH MỤC</h5>

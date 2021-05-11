@@ -89,17 +89,17 @@
                                     if (isset($_POST["btnDatHangHoa"])) { 
                                         if (isset($_SESSION["mskh"])) {
                                             $soLuong = $_POST["soLuong"];
-                                            $sqlGetHangHoaById = "SELECT * FROM hanghoa WHERE MSHH = $maSanPham";
+                                            $sqlGetHangHoaById = "SELECT * FROM hanghoa WHERE MSHH = '$maSanPham'";
                                             $resultGetHangHoaById =  $conn->query($sqlGetHangHoaById);
                                             $hanghoa = $resultGetHangHoaById->fetch_assoc();
                                             if ($soLuong <= $hanghoa["SoLuongHang"]) {
                                                 $date = date("Y-m-d h:i:s");
                                                 $mskh = $_SESSION["mskh"];
-                                                $sqlThemDatHang = "INSERT INTO `quanlydathang`.`dathang` (`NgayDH`, `TrangThai`, `MSKH`) VALUES ('$date', 'Chờ xét duyệt', '$mskh');";
+                                                $sqlThemDatHang = "INSERT INTO dathang (NgayDH, TrangThai, MSKH) VALUES ('$date', 'Chờ xét duyệt', '$mskh');";
                                                 if ($conn->query($sqlThemDatHang) === true) {
                                                     $last_id = $conn->insert_id;
                                                     $thanhtien = $soLuong * $hanghoa["Gia"];
-                                                    $sqlThemChiTietDatHang = "INSERT INTO `quanlydathang`.`chitietdathang` (`SoDonDH`, `MSHH`, `SoLuong`, `GiaDatHang`) VALUES ('$last_id', '$maSanPham', '$soLuong', '$thanhtien');
+                                                    $sqlThemChiTietDatHang = "INSERT INTO chitietdathang (SoDonDH, MSHH, SoLuong, GiaDatHang) VALUES ('$last_id', '$maSanPham', '$soLuong', '$thanhtien');
                                                     ";
                                                     if ($conn->query($sqlThemChiTietDatHang) === true) {
                                                         echo '<script type="text/javascript">alert("Đặt hàng thành công!")</script>';
@@ -132,10 +132,7 @@
                     </div>
                 </div>
             <?php endif; ?>
-
-
         </div>
-
     </div>
 </body>
 

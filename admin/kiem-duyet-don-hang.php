@@ -45,7 +45,7 @@
         <?php include '../dbconnection.php'; ?>
         <!-- End mo ket noi toi mysql -->
         <div class="container mt-3">
-            <div class="row container" style="height: 500px;">
+            <div class="row" style="height: 500px;">
                 <div class="col-md-3">
                     <div class="shadow p-3 mb-3" style="background-color: #00483d; border-radius: 10px;">
                         <h5 style="color: white;text-align: center;">DANH MỤC</h5>
@@ -81,11 +81,9 @@
                                     <thead>
                                         <tr>
                                             <th scope="col">Mã số đơn hàng</th>
-                                            <th scope="col">Ngày đặt hàng</th>
-                                            <th scope="col">Ngày giao hàng</th>
                                             <th scope="col">Trạng thái đơn hàng</th>
-                                            <th scope="col">Mã số khách hàng</th>
-                                            <th scope="col">Nhân viên duyệt đơn hàng</th>
+                                            <th scope="col">Ngày giao hàng</th>
+                                            <th scope="col">Ngày đặt hàng</th>
                                             <th scope="col">Hành động</th>
                                         </tr>
                                     </thead>
@@ -94,11 +92,18 @@
                                         <?php foreach ($resultGetAllDatHang as $item) : ?>
                                             <tr>
                                                 <th scope='row'><?= $item["SoDonDH"] ?></th>
+                                                <?php if ($item["TrangThai"] == "Chờ xét duyệt") : ?>
+                                                    <td>
+                                                        <div style="text-align: center;background-color: red;padding: 7px;color: white;" class="rounded"><?= $item["TrangThai"] ?></div>
+                                                    </td>
+                                                <?php else : ?>
+                                                    <td>
+                                                        <div style="text-align: center;background-color: green;padding: 7px;color: white;" class="rounded"><?= $item["TrangThai"] ?></div>
+                                                    </td>
+                                                <?php endif; ?>
                                                 <td><?= $item["NgayDH"] ?></td>
                                                 <td><?= $item["NgayGH"] ?></td>
-                                                <td><?= $item["TrangThai"] ?></td>
-                                                <td><?= $item["MSKH"] ?></td>
-                                                <td><?= $item["MSNV"] ?></td>
+
                                                 <td>
                                                     <div>
                                                         <a href="kiem-duyet-don-hang.php?action=duyet-don-hang&id=<?= $item['SoDonDH'] ?>" class="btn btn-warning mb-1" style="width: 150px;">
@@ -124,7 +129,7 @@
                     <?php if ((!empty($_GET["action"])) && ($_GET["action"] == "duyet-don-hang") && (!empty($_GET["id"]))) : ?>
                         <?php
                         $masodonhang = $_GET["id"];
-                        $sqlGetDonHangById = "SELECT * FROM dathang WHERE SoDonDH = $masodonhang";
+                        $sqlGetDonHangById = "SELECT * FROM dathang WHERE SoDonDH = '$masodonhang'";
                         $resultGetDonHangById = $conn->query($sqlGetDonHangById);
                         $donhang = $resultGetDonHangById->fetch_assoc();
                         ?>
@@ -132,6 +137,9 @@
                         <div>
                             <div>
                                 <h4 style="text-align: center;">KIỂM DUYỆT ĐƠN HÀNG</h4>
+                            </div>
+                            <div class="mb-1 container">
+                                <a class="btn" href="kiem-duyet-don-hang.php?action=trang-chu" style="background-color: #fbff02; color: black;font-weight: bold;">Quay lại</a>
                             </div>
                             <div class="container">
                                 <form action="" method="post" onsubmit="return checkNgayGiaoHang();">
@@ -166,16 +174,17 @@
                             $ngaygh = date_format($txtNgayGiaoHang, "Y-m-d");
                             $msnv = $_SESSION["msnv"];
                             $sqlDuyetDonHang = <<<EOT
-                        UPDATE `quanlydathang`.`dathang` 
-                        SET `NgayGH` = '$ngaygh',
-                            `TrangThai` = '$txtTrangThaiDonHang',
-                            `MSNV` = $msnv
-                        WHERE (`SoDonDH` = '$txtMaSoDonHang');
+                        UPDATE dathang 
+                        SET NgayGH = '$ngaygh',
+                            TrangThai = '$txtTrangThaiDonHang',
+                            MSNV = '$msnv'
+                        WHERE SoDonDH = '$txtMaSoDonHang';
 EOT;
                             if ($conn->query($sqlDuyetDonHang)) {
                                 echo '<script type="text/javascript">alert("Duyệt đơn hàng thành công!")</script>';
                                 echo "<script>location.replace('kiem-duyet-don-hang.php?action=trang-chu')</script>";
                             } else {
+                                mysqli_error($conn);
                                 echo '<script type="text/javascript">alert("Duyệt đơn hàng thất bại!")</script>';
                             }
                         }
@@ -190,12 +199,18 @@ EOT;
                         <?php
                         $sodon = $_GET["id"];
                         $sqlGetChiTietDatHangBySoDonDH = <<<EOT
-                        SELECT * FROM chitietdathang as a, hanghoa as b, dathang as c, khachhang as d, nhanvien as e 
-                        WHERE a.MSHH = b.MSHH
-                        AND a.SoDonDH = c.SoDonDH
-                        AND c.MSKH = d.MSKH
-                        AND c.MSNV = e.MSNV
-                        AND a.SoDonDH = '$sodon';
+                        SELECT d.MSKH, d.HoTenKH,d.DiaChi,d.SoDienThoai,d.Email,c.NgayDH,c.NgayGH,c.TrangThai,
+                        c.SoDonDH,b.TenHH,b.Gia,a.SoLuong,a.GiaDatHang,e.HoTenNV
+                        FROM chitietdathang as a 
+                        LEFT JOIN hanghoa as b
+                        ON a.MSHH = b.MSHH 
+                        LEFT JOIN dathang as c
+                        ON a.SoDonDH = c.SoDonDH
+                        LEFT JOIN khachhang as d
+                        ON c.MSKH = d.MSKH
+                        LEFT JOIN nhanvien as e 
+                        ON c.MSNV = e.MSNV
+                        WHERE c.SoDonDH = '$sodon'
 EOT;
                         $resultsqlGetChiTietDatHangBySoDonDH = $conn->query($sqlGetChiTietDatHangBySoDonDH);
                         $thongtin = $resultsqlGetChiTietDatHangBySoDonDH->fetch_assoc();
@@ -205,16 +220,19 @@ EOT;
                             <div>
                                 <h4 style="text-align: center;">Chi tiết đặt hàng</h4>
                             </div>
+                            <div class="mb-3">
+                                <a class="btn" href="kiem-duyet-don-hang.php?action=trang-chu" style="background-color: #fbff02; color: black;font-weight: bold;">Quay lại</a>
+                            </div>
                             <div style="margin-left: 8px;">
-                                <h6>Mã số khách hàng: <span style="color: red; font-style: italic;"><?=$thongtin["MSKH"]?></span> </h6>
-                                <h6>Tên khách hàng: <span style="color: red; font-style: italic;"><?=$thongtin["HoTenKH"]?></span> </h6>
-                                <h6>Địa chỉ: <span style="color: red; font-style: italic;"><?=$thongtin["DiaChi"]?></span> </h6>
-                                <h6>Số điện thoại: <span style="color: red; font-style: italic;"><?=$thongtin["SoDienThoai"]?></span> </h6>
-                                <h6>Email: <span style="color: red; font-style: italic;"><?=$thongtin["Email"]?></span> </h6>
-                                <h6>Ngày đặt hàng: <span style="color: red; font-style: italic;"><?=$thongtin["NgayDH"]?></span> </h6>
-                                <h6>Ngày giao hàng: <span style="color: red; font-style: italic;"><?=$thongtin["NgayGH"]?></span> </h6>
-                                <h6>Trạng thái hiện tại: <span style="color: red; font-style: italic;"><?=$thongtin["TrangThai"]?></span> </h6>
-                                <h6>Nhân viên duyệt đơn hàng: <span style="color: red; font-style: italic;"><?=$thongtin["HoTenNV"]?></span> </h6>
+                                <h6>Mã số khách hàng: <span style="color: red; font-style: italic;"><?= $thongtin["MSKH"] ?></span> </h6>
+                                <h6>Tên khách hàng: <span style="color: red; font-style: italic;"><?= $thongtin["HoTenKH"] ?></span> </h6>
+                                <h6>Địa chỉ: <span style="color: red; font-style: italic;"><?= $thongtin["DiaChi"] ?></span> </h6>
+                                <h6>Số điện thoại: <span style="color: red; font-style: italic;"><?= $thongtin["SoDienThoai"] ?></span> </h6>
+                                <h6>Email: <span style="color: red; font-style: italic;"><?= $thongtin["Email"] ?></span> </h6>
+                                <h6>Ngày đặt hàng: <span style="color: red; font-style: italic;"><?= $thongtin["NgayDH"] ?></span> </h6>
+                                <h6>Ngày giao hàng: <span style="color: red; font-style: italic;"><?= $thongtin["NgayGH"] ?></span> </h6>
+                                <h6>Trạng thái hiện tại: <span style="color: red; font-style: italic;"><?= $thongtin["TrangThai"] ?></span> </h6>
+                                <h6>Nhân viên duyệt đơn hàng: <span style="color: red; font-style: italic;"><?= $thongtin["HoTenNV"] ?></span> </h6>
 
                             </div>
 
@@ -244,6 +262,9 @@ EOT;
                                     </tbody>
                                 </table>
                             </div>
+                            <a href="kiem-duyet-don-hang.php?action=duyet-don-hang&id=<?= $item['SoDonDH'] ?>" class="btn btn-warning mb-1" style="width: 150px;">
+                                <span data-feather="edit"></span> Duyệt đơn hàng
+                            </a>
 
                         </div>
                         <!-- End trang chu hang hoa -->

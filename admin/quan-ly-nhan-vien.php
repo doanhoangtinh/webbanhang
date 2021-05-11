@@ -48,7 +48,7 @@
             <!-- End mo ket noi toi mysql -->
 
             <div class="container mt-3">
-                <div class="row container" style="height: 500px;">
+                <div class="row" style="height: 500px;">
                     <div class="col-md-3">
                         <div class="shadow p-3 mb-3" style="background-color: #00483d; border-radius: 10px;">
                             <h5 style="color: white;text-align: center;">DANH MỤC</h5>
@@ -135,7 +135,7 @@
                                     <a class="btn" href="quan-ly-nhan-vien.php?action=trang-chu" style="background-color: #fbff02; color: black;font-weight: bold;">Quay lại</a>
                                 </div>
                                 <div class="container">
-                                    <form action="" method="post" enctype="multipart/form-data">
+                                    <form action="" method="post" enctype="multipart/form-data" onsubmit="return confirm('Bạn có chắc chắn muốn thêm?');">
                                         <div class="mb-3">
                                             <label for="txtThemTenNhanVien" class="form-label">Tên nhân viên</label>
                                             <input type="text" required maxlength="79" class="form-control" id="txtThemTenNhanVien" name="txtThemTenNhanVien">
@@ -176,8 +176,8 @@
                                 $themTaiKhoan = $_POST["txtThemTaiKhoan"];
                                 $themMatKhau = $_POST["txtThemMatKhau"];
                                 $sqlThemNhanVien = <<<EOT
-                        INSERT INTO `quanlydathang`.`nhanvien` 
-                        (`HoTenNV`, `ChucVu`, `DiaChi`, `SoDienThoai`, `TaiKhoan`, `MatKhau`) 
+                        INSERT INTO nhanvien 
+                        (HoTenNV, ChucVu, DiaChi, SoDienThoai, TaiKhoan, MatKhau) 
                         VALUES ('$themTenNhanVien' , '$themChucVu', '$themDiaChi','$themSoDienThoai', '$themTaiKhoan', '$themMatKhau');
 EOT;
                                 if ($conn->query($sqlThemNhanVien)) {
@@ -209,7 +209,7 @@ EOT;
                                     <a class="btn" href="quan-ly-nhan-vien.php?action=trang-chu" style="background-color: #fbff02; color: black;font-weight: bold;">Quay lại</a>
                                 </div>
                                 <div class="container">
-                                    <form action="" method="post" enctype="multipart/form-data">
+                                    <form action="" method="post" enctype="multipart/form-data" onsubmit="return confirm('Bạn có chắc chắn muốn sửa?');">
                                         <div class="mb-3">
                                             <input type="hidden" required class="form-control" id="txtSuaMaNhanVien" name="txtSuaMaNhanVien" value="<?= $nhanvien["MSNV"] ?>">
                                         </div>
@@ -254,14 +254,14 @@ EOT;
                                 $suaTaiKhoan = $_POST["txtSuaTaiKhoan"];
                                 $suaMatKhau = $_POST["txtSuaMatKhau"];
                                 $sqlSuaNhanVien = <<<EOT
-                        UPDATE `quanlydathang`.`nhanvien` 
-                        SET `HoTenNV` = '$suaTenNhanVien', 
-                            `ChucVu` = '$suaChucVu', 
-                            `DiaChi` = '$suaDiaChi', 
-                            `SoDienThoai` = '$suaSoDienThoai', 
-                            `TaiKhoan` = '$suaTaiKhoan', 
-                            `MatKhau` = '$suaMatKhau' 
-                        WHERE (`MSNV` = '$suaMaNhanVien');
+                        UPDATE nhanvien 
+                        SET HoTenNV = '$suaTenNhanVien', 
+                            ChucVu = '$suaChucVu', 
+                            DiaChi = '$suaDiaChi', 
+                            SoDienThoai = '$suaSoDienThoai', 
+                            TaiKhoan = '$suaTaiKhoan', 
+                            MatKhau = '$suaMatKhau' 
+                        WHERE MSNV = '$suaMaNhanVien';
 
 EOT;
                                 if ($conn->query($sqlSuaNhanVien)) {
@@ -282,8 +282,8 @@ EOT;
                         if (isset($_POST["btnXoaNhanVien"])) {
                             $xoaMaNhanVien = $_POST["txtXoaMaNhanVien"];
                             $sqlXoaNhanVien = <<<EOT
-                        DELETE FROM `quanlydathang`.`nhanvien` 
-                        WHERE (`MSNV` = '$xoaMaNhanVien');
+                        DELETE FROM nhanvien 
+                        WHERE MSNV = '$xoaMaNhanVien';
 EOT;
                             if ($conn->query($sqlXoaNhanVien)) {
                                 echo '<script type="text/javascript">alert("Xóa nhân viên thành công!")</script>';

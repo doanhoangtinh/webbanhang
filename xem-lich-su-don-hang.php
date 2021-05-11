@@ -34,7 +34,7 @@
             SELECT * FROM chitietdathang as a, dathang as b, hanghoa as c 
             WHERE a.SoDonDH = b.SoDonDH
             AND a.MSHH = c.MSHH
-            AND b.MSKH = $mskh;
+            AND b.MSKH = '$mskh';
 EOT;
             $resultsqlGetDatHangByMSKH = $conn->query($sqlGetDatHangByMSKH);
             // $thongtin = $resultsqlGetDatHangByMSKH->fetch_assoc();

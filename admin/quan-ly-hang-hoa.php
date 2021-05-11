@@ -57,7 +57,7 @@ session_start();
             <!-- End mo ket noi toi mysql -->
 
             <div class="container mt-3">
-                <div class="row container" style="height: 500px;">
+                <div class="row" style="height: 500px;">
                     <!-- Sidebar -->
                     <div class="col-md-3">
                         <div class="shadow p-3 mb-3" style="background-color: #00483d; border-radius: 10px;">
@@ -143,7 +143,7 @@ session_start();
                                     <a class="btn" href="quan-ly-hang-hoa.php?action=trang-chu" style="background-color: #fbff02; color: black;font-weight: bold;">Quay lại</a>
                                 </div>
                                 <div class="container">
-                                    <form action="" method="post" enctype="multipart/form-data">
+                                    <form action="" method="post" enctype="multipart/form-data" onsubmit="return confirm('Bạn có muốn thêm hàng hóa?');">
                                         <div class="mb-3">
                                             <label for="txtThemTenHang" class="form-label">Tên hàng hóa</label>
                                             <input type="text" required maxlength="79" class="form-control" id="txtThemTenHang" name="txtThemTenHang">
@@ -202,8 +202,8 @@ session_start();
                                 $themGhiChu = $_POST["txtThemGhiChu"];
                                 $themLoaiHang = $_POST["txtThemLoaiHang"];
                                 $sqlThemHangHoa = <<<EOT
-                        INSERT INTO `quanlydathang`.`hanghoa` 
-                        (`TenHH`, `QuyCach`, `SoLuongHang`,`Gia`, `GhiChu`, `MaLoaiHang`, `AnhHangHoa`) 
+                        INSERT INTO hanghoa 
+                        (TenHH, QuyCach, SoLuongHang,Gia, GhiChu, MaLoaiHang, AnhHangHoa) 
                         VALUES ('$themTenHang' , '$themQuyCach', '$themSoLuong','$themGia', '$themGhiChu', '$themLoaiHang', '$fileName');
 EOT;
                                 if ($conn->query($sqlThemHangHoa)) {
@@ -222,7 +222,7 @@ EOT;
                         <?php if ((!empty($_GET["action"])) && ($_GET["action"] == "sua-hang-hoa") && (!empty($_GET["id"]))) : ?>
                             <?php
                             $masohanghoa = $_GET["id"];
-                            $sqlGetHangHoaById = "SELECT * FROM hanghoa WHERE MSHH = $masohanghoa";
+                            $sqlGetHangHoaById = "SELECT * FROM hanghoa WHERE MSHH = '$masohanghoa'";
                             $resultGetHangHoaById = $conn->query($sqlGetHangHoaById);
                             $hangHoa = $resultGetHangHoaById->fetch_assoc();
                             ?>
@@ -237,7 +237,7 @@ EOT;
                                 </div>
 
                                 <div class="container">
-                                    <form action="" method="post" enctype="multipart/form-data">
+                                    <form action="" method="post" enctype="multipart/form-data" onsubmit="return confirm('Bạn có chắc chắn muốn sửa?');">
                                         <div class="mb-3">
                                             <input type="hidden" class="form-control" id="txtMaHangHoa" name="txtSuaMaHangHoa" value="<?= $hangHoa["MSHH"] ?>">
                                         </div>
@@ -297,14 +297,14 @@ EOT;
                                     $suaMaHangHoa = $_POST["txtSuaMaHangHoa"];
                                     $suaMaLoaiHang = $_POST["txtSuaLoaiHang"];
                                     $sqlCapNhatHangHoa = <<<EOT
-                            UPDATE `quanlydathang`.`hanghoa` 
-                            SET `TenHH` = '$suaTenHang', 
-                                `QuyCach` = '$suaQuyCach',
-                                `Gia` = '$suaGia', 
-                                `GhiChu` = '$suaGhiChu',
-                                `SoLuongHang` = '$suaSoLuong',
-                                `MaLoaiHang` ='$suaMaLoaiHang'
-                            WHERE (`MSHH` = '$suaMaHangHoa');
+                            UPDATE hanghoa 
+                            SET TenHH = '$suaTenHang', 
+                                QuyCach = '$suaQuyCach',
+                                Gia = '$suaGia', 
+                                GhiChu = '$suaGhiChu',
+                                SoLuongHang = '$suaSoLuong',
+                                MaLoaiHang ='$suaMaLoaiHang'
+                            WHERE MSHH = '$suaMaHangHoa';
 EOT;
                                     if ($conn->query($sqlCapNhatHangHoa)) {
                                         echo '<script type="text/javascript">alert("Sửa hàng hóa thành công!")</script>';
@@ -328,15 +328,15 @@ EOT;
                                     $suaMaHangHoa = $_POST["txtSuaMaHangHoa"];
                                     $suaMaLoaiHang = $_POST["txtSuaLoaiHang"];
                                     $sqlCapNhatHangHoa = <<<EOT
-                            UPDATE `quanlydathang`.`hanghoa` 
-                            SET `TenHH` = '$suaTenHang', 
-                                `QuyCach` = '$suaQuyCach',
-                                `Gia` = '$suaGia', 
-                                `GhiChu` = '$suaGhiChu',
-                                `SoLuongHang` = '$suaSoLuong', 
-                                `AnhHangHoa` = '$fileName',
-                                `MaLoaiHang` ='$suaMaLoaiHang'
-                            WHERE (`MSHH` = '$suaMaHangHoa');                            
+                            UPDATE hanghoa 
+                            SET TenHH = '$suaTenHang', 
+                                QuyCach = '$suaQuyCach',
+                                Gia = '$suaGia', 
+                                GhiChu = '$suaGhiChu',
+                                SoLuongHang = '$suaSoLuong', 
+                                AnhHangHoa = '$fileName',
+                                MaLoaiHang ='$suaMaLoaiHang'
+                            WHERE MSHH = '$suaMaHangHoa';                            
 EOT;
                                     if ($conn->query($sqlCapNhatHangHoa)) {
                                         echo '<script type="text/javascript">alert("Sửa hàng hóa thành công!")</script>';
@@ -357,8 +357,8 @@ EOT;
                         if (isset($_POST["btnXoaHangHoa"])) {
                             $xoaMaSoHangHoa = $_POST["txtXoaMaHangHoa"];
                             $sqlXoaHangHoa = <<<EOT
-                        DELETE FROM `quanlydathang`.`hanghoa` 
-                        WHERE (`MSHH` = '$xoaMaSoHangHoa');
+                        DELETE FROM hanghoa 
+                        WHERE MSHH = '$xoaMaSoHangHoa';
 EOT;
                             if ($conn->query($sqlXoaHangHoa)) {
                                 echo '<script type="text/javascript">alert("Xóa hàng hóa thành công!")</script>';
@@ -386,8 +386,6 @@ EOT;
             </div>
 
         <?php endif; ?>
-
-
 
     <?php else : ?>
         <?php echo "<script>location.replace('dang-nhap.php')</script>"; ?>

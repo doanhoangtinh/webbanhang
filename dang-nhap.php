@@ -148,7 +148,7 @@ session_start();
                         $sdt = $_POST["txtSDT"];
                         $taiKhoan = $_POST["txtTaiKhoan"];
                         $matKhau = $_POST["txtMatKhau"];
-                        $sql =  "INSERT INTO `quanlydathang`.`khachhang` (`HoTenKH`, `DiaChi`, `SoDienThoai`, `Email`, `TaiKhoan`, `MatKhau`) 
+                        $sql =  "INSERT INTO khachhang (HoTenKH, DiaChi, SoDienThoai, Email, TaiKhoan, MatKhau) 
                 VALUES ('$hoTenKH', '$diaChi', '$sdt', '$email', '$taiKhoan', '$matKhau');";
                         $conn->query($sql);
 
