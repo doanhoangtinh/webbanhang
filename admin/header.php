@@ -1,6 +1,6 @@
 <nav class="navbar rounded sticky-top" style="background-color: #00483d;">
     <div class="container">
-        <a class="navbar-brand" href="kiem-duyet-don-hang.php?action=trang-chu" style="text-shadow: 1px 0px 2px rgb(0, 0, 0); font-weight: bold;color: rgb(251, 255, 2); font-style: italic;">CT249 - PTMPTN</a>
+        <a class="navbar-brand" href="kiem-duyet-don-hang.php?action=trang-chu" style="text-shadow: 1px 0px 2px rgb(0, 0, 0); font-weight: bold;color: rgb(251, 255, 2); font-style: italic;">CT428 - LTWeb</a>
         <?php if (isset($_SESSION["msnv"])) : ?>
             <div class="d-flex">
                 <form action="" method="post">

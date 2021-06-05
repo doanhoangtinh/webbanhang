@@ -2,7 +2,7 @@
 
 <nav class="navbar navbar-expand-lg shadow p-3 mb-3  rounded sticky-top" style="background-color: #00483d;">
     <div class="container">
-        <a class="navbar-brand" href="index.php" style="text-shadow: 1px 0px 2px rgb(0, 0, 0); font-weight: bold;color: rgb(251, 255, 2); font-style: italic;">CT249 - PTMPTN</a>
+        <a class="navbar-brand" href="index.php" style="text-shadow: 1px 0px 2px rgb(0, 0, 0); font-weight: bold;color: rgb(251, 255, 2); font-style: italic;">CT428 - LTWeb</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <i class="fas fa-bars" style="background-color: white;"></i>
         </button>
@@ -38,10 +38,10 @@
                 <?php endif; ?>
 
             </ul>
-            <form class="d-flex" style="padding-right: 10px;">
+            <!-- <form class="d-flex" style="padding-right: 10px;">
                 <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn " style="color: #00483d; background-color: white;border: 1px solid;" type="submit">Search</button>
-            </form>
+            </form> -->
 
             <?php if (isset($_SESSION["mskh"])) : ?>
                 <div class="d-flex">

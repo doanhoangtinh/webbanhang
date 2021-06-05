@@ -40,6 +40,7 @@
         <!-- Header -->
         <?php include 'header.php' ?>
         <!-- End header -->
+        <?php include '../dbconnection.php'; ?>
         <?php if ($_SESSION["chucvu"] == "QTV") : ?>
             <div class="container mt-3">
                 <div class="row" style="height: 500px;">
@@ -59,6 +60,43 @@
                     </div>
                     <div class="col-md-9 shadow p-3 mb-5 bg-body rounded">
                         <h4 style="text-align: center;">DANH SÁCH THÔNG TIN CÁC KHÁCH HÀNG</h4>
+                        <?php if ((!empty($_GET["action"])) && ($_GET["action"] == "trang-chu")) : ?>
+                            <?php
+                            $sqlGetAllKhachHang = "SELECT * FROM khachhang";
+                            $resultGetAllKhachHang = $conn->query($sqlGetAllKhachHang);
+                            ?>
+                            <!-- Trang chu loai hang hoa -->
+                            <div>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Mã số khách hàng</th>
+                                                <th scope="col">Họ tên</th>
+                                                <th scope="col">Địa chỉ</th>
+                                                <th scope="col">Số điện thoại</th>
+                                                <th scope="col">Email</th>
+                                                <th scope="col">Tài khoản</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($resultGetAllKhachHang as $item) : ?>
+                                                <tr>
+                                                    <td><?= $item["MSKH"] ?></td>
+                                                    <td><?= $item["HoTenKH"] ?></td>
+                                                    <td><?= $item["DiaChi"] ?></td>
+                                                    <td><?= $item["SoDienThoai"] ?></td>
+                                                    <td><?= $item["Email"] ?></td>
+                                                    <td><?= $item["TaiKhoan"] ?></td>
+                                                
+                                                </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- End trang chu loai hang hoa -->
+                        <?php endif ?>
                     </div>
                 </div>
             </div>
